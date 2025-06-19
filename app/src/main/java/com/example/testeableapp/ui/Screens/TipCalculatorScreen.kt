@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
@@ -53,7 +54,9 @@ fun TipCalculatorScreen() {
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("billAmount")
         )
 
         Text("Porcentaje de propina: $tipPercentage%")
@@ -62,31 +65,36 @@ fun TipCalculatorScreen() {
             onValueChange = { tipPercentage = it.toInt() },
             valueRange = 0f..50f,
             steps = 49,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("tipPercent")
         )
 
         Text("Número de personas: $numberOfPeople")
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().testTag("peopleRow")
         ) {
-            Button(onClick = { if (numberOfPeople > 1) numberOfPeople-- }) {
+            Button(
+                onClick = { if (numberOfPeople > 1) numberOfPeople-- },
+                modifier = Modifier.testTag("decreasePeople")
+            ) {
                 Text("-")
             }
-            Text(text = numberOfPeople.toString())
-            Button(onClick = { numberOfPeople++ }) {
+            Text(text = numberOfPeople.toString(),modifier = Modifier.testTag("CurrentPeople"))
+            Button(
+                onClick = { numberOfPeople++ },
+                modifier = Modifier.testTag("increasePeople")
+            ) {
                 Text("+")
             }
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
         ) {
             Checkbox(
                 checked = roundUp,
-                onCheckedChange = { roundUp = it }
+                onCheckedChange = { roundUp = it }, modifier = Modifier.testTag("roundUp")
             )
             Text("Redondear propina", modifier = Modifier.padding(start = 8.dp))
         }
