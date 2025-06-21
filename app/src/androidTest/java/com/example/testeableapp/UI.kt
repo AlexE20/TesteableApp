@@ -5,28 +5,27 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.performTouchInput
-import androidx.test.espresso.action.ViewActions.swipeRight
 import com.example.testeableapp.ui.Screens.TipCalculatorScreen
 import org.junit.Rule
 import org.junit.Test
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.onChild
 
 class UI {
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun redondearPropinaValidarCambio() {
+            fun redondearPropinaValidarCambio() {
         composeTestRule.setContent { TipCalculatorScreen() }
 
-        composeTestRule.onNodeWithTag("billAmount").performTextInput("100")
+        composeTestRule.onNodeWithTag("billAmount").performTextInput("110.58")
         composeTestRule.onNodeWithTag("tipPercent")
             .performSemanticsAction(SemanticsActions.SetProgress) { it(37f) }
         composeTestRule.onNodeWithTag("roundUp").performClick()
-        composeTestRule.onNodeWithText("Propina: $37.00").assertExists()
+        composeTestRule.onNodeWithText("Propina: $41.00").assertExists()
     }
 
     @Test
@@ -57,7 +56,18 @@ class UI {
         composeTestRule.onNodeWithTag("tipPercent")
             .performSemanticsAction(SemanticsActions.SetProgress) { it(15f) }
         composeTestRule.onNodeWithTag("increasePeople").performClick()
-        composeTestRule.onNodeWithText("Total por persona: $115.00").assertExists()
+        composeTestRule.onNodeWithTag("peopleRow").assertTextEquals("Número de personas: 2")
+    }
+
+    @Test
+    fun validarCambioNumeroPersonas2Clicks() {
+        composeTestRule.setContent { TipCalculatorScreen() }
+
+        composeTestRule.onNodeWithTag("billAmount").performTextInput("1234")
+        composeTestRule.onNodeWithTag("tipPercent")
+            .performSemanticsAction(SemanticsActions.SetProgress) { it(14f) }
+        composeTestRule.onNodeWithTag("increasePeople").performClick().performClick()
+        composeTestRule.onNodeWithText("Total por persona: $468.92").assertExists()
     }
 
 

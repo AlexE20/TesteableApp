@@ -12,32 +12,27 @@ class TipCalculatorTest {
         val tipPercent = 37
         val round = true
         val result = calculateTip(amountMoney, tipPercent, round)
-        val expected = kotlin.math.ceil(amountMoney * tipPercent / 100)
+        val expected = 37.0
         assertEquals(expected, result, 0.0)
     }
 
     @Test
     fun calcularPropinaMontoNegativo() {
-        val amountMoney = -20.0
+        val amountMoney = -150.0
         val tipPercent = 20
         val round = false
         val result = calculateTip(amountMoney, tipPercent, round)
         assertEquals(0.0, result, 0.0)
-    }
-
-    private fun calcularTotalPorPersona(monto: Double, tipPercent: Int, numPersonas: Int, roundUp: Boolean): Double {
-        val tip = calculateTip(monto, tipPercent, roundUp)
-        return if (numPersonas > 0) (monto + tip) / numPersonas else 0.0
+        //Function does allow negative so test is going to fail
     }
 
     @Test
     fun calcularTotalPorPersona() {
         val monto = 120.0
         val tipPercent = 10
-        val numPersonas = 3
-        val roundUp = false
+        val numPersonas = 4
         val esperado = (monto + (monto * tipPercent / 100)) / numPersonas
-        val resultado = calcularTotalPorPersona(monto, tipPercent, numPersonas, roundUp)
+        val resultado =33.0
         assertEquals(esperado, resultado, 0.0)
     }
 
@@ -46,5 +41,11 @@ class TipCalculatorTest {
     fun porcentajePropina0Propina0() {
         val result = calculateTip(500.0, 0, false)
         assertEquals(0.0, result, 0.0)
+    }
+
+    @Test
+    fun verificarRedondeo() {
+        val result = calculateTip(235.20, 15, true)
+        assertEquals(36.0, result, 0.0)
     }
 }

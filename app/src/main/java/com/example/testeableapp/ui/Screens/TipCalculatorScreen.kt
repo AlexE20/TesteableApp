@@ -68,11 +68,10 @@ fun TipCalculatorScreen() {
             modifier = Modifier.fillMaxWidth().testTag("tipPercent")
         )
 
-        Text("Número de personas: $numberOfPeople")
+        Text("Número de personas: $numberOfPeople",modifier = Modifier.testTag("peopleRow"))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().testTag("peopleRow")
         ) {
             Button(
                 onClick = { if (numberOfPeople > 1) numberOfPeople-- },
@@ -80,7 +79,7 @@ fun TipCalculatorScreen() {
             ) {
                 Text("-")
             }
-            Text(text = numberOfPeople.toString(),modifier = Modifier.testTag("CurrentPeople"))
+            Text(text = numberOfPeople.toString(),)
             Button(
                 onClick = { numberOfPeople++ },
                 modifier = Modifier.testTag("increasePeople")
